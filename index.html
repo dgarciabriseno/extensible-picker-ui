@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Duration Picker</title>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+              padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Duration Picker</h1>
+        <p>
+        This is a simple vanilla javascript implementation of an extensible time duration picker.
+        It is extremely extensible in the sense that you provide your own description of a duration.
+        </p>
+        <h2>Description Format</h2>
+        <p>
+        To initialize a duration picker, you must specify the labels, and what they mean to you.
+        If you want an input for choosing minutes and seconds, then you specify that the labels are "minutes" and "seconds."
+        You must also tell the plugin that 1 minute = 60 seconds And 1 "second" = 1 second.
+        If you need to, you can also specify a min and max value, you might do this if you have an "hours" input and you don't want the user to say something like 1 hour and 70 minutes.
+        You may omit the max field if you want to allow any value.
+        Here's what a basic minutes/seconds picker looks like:
+<pre>
+<code>
+let secondsPicker = new DurationPicker('js-seconds-picker', {
+    seconds: {
+        seconds: 1,
+        min: 0
+    }
+});
+</code>
+</pre>
+        </p>
+
+        <h2>Seconds Picker</h2>
+        <div id="js-seconds-picker"></div>
+        <button type="button" id="js-seconds-button">Get Time</button>
+        <p>Seconds: <span id="js-seconds-time"></span></p>
+        <p>This is created from the code above, click Get Time to see what it returns</p>
+
+        <h3>Hours, Minutes, and Seconds</h3>
+        <p>
+        The above example isn't very interesting.
+        All you can really see is that it's returning the same thing as itself.
+        Nothing a normal <code>input.value</code> can't do already.
+        This time, let's add hours, minutes and seconds together.
+<pre>
+let timePicker = new DurationPicker('js-time-picker', {
+    hours: {
+        seconds: 3600,
+        min: 0
+    },
+    minutes: {
+        seconds: 60,
+        min: 0
+    },
+    seconds: {
+        seconds: 1,
+        min: 0
+    }
+});
+</pre>
+        <div id="js-time-picker"></div>
+        <button type="button" id="js-time-button">Get Time</button>
+        <p>Seconds: <span id="js-time-time"></span></p>
+        <p>Try it out</p>
+
+        <h2>Years, Months, Days, Hours, Minutes, and Seconds</h2>
+        <p>
+        Above is about where many plugins end.
+        But this one is built to be extensible.
+        You can go as high as you want. Let's add years and months to our picker.
+<pre>
+let yearPicker = new DurationPicker('js-time-picker', {
+    years: {
+        seconds: 3.154e+7,
+        min: 0
+    },
+    months: {
+        seconds: 2.628e+6,
+        min: 0
+    },
+    days: {
+        seconds: 86400,
+        min: 0
+    },
+    hours: {
+        seconds: 3600,
+        min: 0
+    },
+    minutes: {
+        seconds: 60,
+        min: 0
+    },
+    seconds: {
+        seconds: 1,
+        min: 0
+    }
+});
+</pre>
+        </p>
+        <div id="js-year-picker"></div>
+        <button type="button" id="js-year-button">Get Time</button>
+        <p>Seconds: <span id="js-year-time"></span></p>
+
+        <h2>Warbles, Jips, and Beeps</h2>
+        <p>
+        By now, you should have noticed that the plugin doesn't know what years, or months, or really even what minutes are.
+        It barely knows what seconds are, though we have to tell it that 1 "second" is 1 second, and that 1 minute is 60 seconds.
+        So you could really call these things whatever you want. Maybe a Warble is 100 seconds, a Jip is 50 seconds, and a Beep is 13 seconds.
+        Then you have this:
+<pre>
+let warblePicker = new DurationPicker('js-warble-picker', {
+    warbles: {
+        seconds: 100,
+        min: 0
+    },
+    jips: {
+        seconds: 50,
+        min: 0
+    },
+    beep: {
+        seconds: 13,
+        min: 0
+    }
+});
+</pre>
+        <div id="js-warble-picker"></div>
+        <button type="button" id="js-warble-button">Get Time</button>
+        <p>Seconds: <span id="js-warble-time"></span></p>
+        </p>
+
+        <h2>Domain Agnostic</h2>
+        <p>
+        If you're clever, you may realize this type of description means that the same idea can be applied to any conversion into a base unit.
+        In the above examples we're turning minutes, hours, etc. into seconds, the base unit.
+        The only reason we specify seconds in the description is that this was built to be a time picker.
+        You could do rotations. Or a conversion from inches into centimeters. Or anything else
+        </p>
+
+        <h3>Rotations</h3>
+<pre>
+let rotationPicker = new DurationPicker('js-rotation-picker', {
+    revolutions: {
+        seconds: 360
+    },
+    degrees: {
+        seconds: 1
+    }
+});
+</pre>
+        <div id="js-rotation-picker"></div>
+        <button type="button" id="js-rotation-button">Get Degrees</button>
+        <p>Degrees: <span id="js-rotation-time"></span></p>
+
+        <h3>Unit Conversions</h3>
+<pre>
+let centimeterPicker = new DurationPicker('js-centimeter-picker', {
+    inches: {
+        seconds: 2.54
+    }
+});
+</pre>
+        <div id="js-centimeter-picker"></div>
+        <button type="button" id="js-centimeter-button">Get Centimeters</button>
+        <p>Centimeters: <span id="js-centimeter-time"></span></p>
+
+        <h2>Description Properties</h2>
+        <p>
+        This is a new project, so there aren't many constraints yet.
+        You'll notice throughout the example I set <code>min: 0</code> for many objects.
+        This applies a constraint that won't allow the user to enter a value below 0.
+        You can also specify a <code>max: number</code>.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>seconds</td>
+                    <td>number</td>
+                    <td>The number of seconds (or "units") for the field.</td>
+                </tr>
+                <tr>
+                    <td>min</td>
+                    <td>number</td>
+                    <td>The minimum value allowd in the input</td>
+                </tr>
+                <tr>
+                    <td>max</td>
+                    <td>number</td>
+                    <td>The maximum value allowed in the input</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script src="duration-picker.js"></script>
+        <script>
+        let secondsPicker = new DurationPicker('js-seconds-picker', {
+            seconds: {
+                seconds: 1,
+                min: 0
+            }
+        });
+        document.getElementById('js-seconds-button').addEventListener('click', () => {
+            document.getElementById('js-seconds-time').textContent = secondsPicker.GetDuration();
+        });
+
+        let timePicker = new DurationPicker('js-time-picker', {
+            hours: {
+                seconds: 3600,
+                min: 0
+            },
+            minutes: {
+                seconds: 60,
+                min: 0
+            },
+            seconds: {
+                seconds: 1,
+                min: 0
+            }
+        });
+        document.getElementById('js-time-button').addEventListener('click', () => {
+            document.getElementById('js-time-time').textContent = timePicker.GetDuration();
+        });
+
+        let yearPicker = new DurationPicker('js-year-picker', {
+            years: {
+                seconds: 3.154e+7,
+                min: 0
+            },
+            months: {
+                seconds: 2.628e+6,
+                min: 0
+            },
+            days: {
+                seconds: 86400,
+                min: 0
+            },
+            hours: {
+                seconds: 3600,
+                min: 0
+            },
+            minutes: {
+                seconds: 60,
+                min: 0
+            },
+            seconds: {
+                seconds: 1,
+                min: 0
+            }
+        });
+        document.getElementById('js-year-button').addEventListener('click', () => {
+            document.getElementById('js-year-time').textContent = yearPicker.GetDuration();
+        });
+
+        let warblePicker = new DurationPicker('js-warble-picker', {
+            warbles: {
+                seconds: 100,
+                min: 0
+            },
+            jips: {
+                seconds: 50,
+                min: 0
+            },
+            beep: {
+                seconds: 13,
+                min: 0
+            }
+        });
+        document.getElementById('js-warble-button').addEventListener('click', () => {
+            document.getElementById('js-warble-time').textContent = warblePicker.GetDuration();
+        });
+
+        let rotationPicker = new DurationPicker('js-rotation-picker', {
+            revolutions: {
+                seconds: 360
+            },
+            degrees: {
+                seconds: 1
+            }
+        });
+        document.getElementById('js-rotation-button').addEventListener('click', () => {
+            document.getElementById('js-rotation-time').textContent = rotationPicker.GetDuration();
+        });
+
+
+        let centimeterPicker = new DurationPicker('js-centimeter-picker', {
+            inches: {
+                seconds: 2.54
+            }
+        });
+        document.getElementById('js-centimeter-button').addEventListener('click', () => {
+            document.getElementById('js-centimeter-time').textContent = centimeterPicker.GetDuration();
+        });
+        </script>
+    </body>
+</html>
