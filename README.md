@@ -6,7 +6,9 @@ It was initially written as a duration picker, and can function as a unit conver
 See the demo here (TODO add link when it's hosted)
 
 ## Simplest Usage
-- Download and include duration-picker.js and include it on your page.
+Download and include duration-picker.js and include it on your page.
+
+Bring your own CSS (for now). The div containing your inputs and labels will have the css class `duration-picker` on it.
 
 This code will create a duration picker that allows the user to enter hours, minutes, and seconds.
 ```javascript
